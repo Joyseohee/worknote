@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE instance-profile
+        SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
+
+<instance-profile id="main"
+                 name="Joypark 개발노트"
+                 start-page="webpack-build-issue.md">
+
+    <toc-element topic="how-to.md"/>
+    <toc-element topic="webpack-build-issue.md"/>
+    <toc-element topic="ThreadANDProcess.md"/>
+    <toc-element topic="programming-language.md"/>
+    <toc-element topic="multithread.md"/>
+    <toc-element topic="nodejs.md"/>
+</instance-profile>

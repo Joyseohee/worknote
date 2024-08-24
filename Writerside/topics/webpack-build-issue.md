@@ -63,7 +63,7 @@ module.exports = {
 };
 ```
 
-webpack 2 릴리스에서는 ES2015모듈과 사용하지 않는 모듈의 export를 감지하는 기능을 제공하고 
+webpack 2 릴리스에서는 ES2015모듈과 사용하지 않는 모듈의 export를 감지하는 기능을 제공하고
 4 버전은 package.json의 "sideEffects" 프로퍼티를 통해 컴파일러에 힌트를 제공하는 방식으로 기능을 확장합니다.
 프로젝트의 어떤 파일이 순수한지 나타내며 만약 사용하지 않는다면 제거해도 괜찮은지 표시합니다.
 
@@ -86,6 +86,7 @@ webpack 2 릴리스에서는 ES2015모듈과 사용하지 않는 모듈의 expor
         <p>정적 로드 때문에 런타임에 동적으로 모듈 경로를 결정할 수 없는 대신 트리 쉐이킹 같은 최적화가 가능합니다.</p>
         <img src="esm_wehagoui.png" alt="esm_wehagoui" border-effect="line"/>
     </step>
+</procedure>
 
 ### 비교
 | 특성                | ES Modules (ESM)                   | CommonJS                         |
@@ -97,7 +98,6 @@ webpack 2 릴리스에서는 ES2015모듈과 사용하지 않는 모듈의 expor
 | 로딩 특성           | 비동기 로딩(Asynchronous)          | 동기 로딩(Synchronous)          |
 | 지원 환경           | 최신 브라우저 및 Node.js           | 주로 Node.js                     |
 | 트리 쉐이킹         | 지원                               | 제한적 지원                      |
-</procedure>
 
 ### ESM 빌드로 init 함수가 사라지는 이슈가 해결 된 이유
 1. 정적 분석과 트리 쉐이킹:
@@ -146,15 +146,3 @@ module.exports = {
     },
 }
 ```
-
-<seealso>
-    <category ref="wrs">
-        <a href="https://webpack.kr/guides/tree-shaking/">트리 쉐이킹</a>
-        <a href="https://webpack.kr/guides/tree-shaking/#mark-the-file-as-side-effect-free">Tree Shaking</a>
-        <a href="https://ui.toast.com/weekly-pick/ko_20180716">트리 쉐이킹으로 자바스크립트 페이로드 줄이기</a>
-        <a href="https://medium.com/@hong009319/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%9D%98-%ED%91%9C%EC%A4%80-%EC%A0%95%EC%9D%98-commonjs-vs-es-modules-306e5f0a74b1">자바스크립트의 표준 정의 : CommonJS vs ES Modules</a>
-        <a href="https://f-lab.kr/insight/commonjs-vs-esmodule-20240523">CommonJS와 ES Module의 차이점과 선택 기준</a>
-        <a href="https://tech.kakao.com/posts/605">CommonJS에서 ESM으로 전환하기</a>
-        <a href="https://github.com/webpack/webpack/issues/6065">Allow app authors to force libraries into sideEffects: false</a>
-    </category>
-</seealso>

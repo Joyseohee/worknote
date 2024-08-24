@@ -7,7 +7,6 @@
                  start-page="webpack-build-issue.md">
     <toc-element topic="how-iterator-could-access-multiple-collections.md"/>
     <toc-element topic="collection-and-collections.md"/>
-    <toc-element topic="how-to.md"/>
     <toc-element topic="webpack-build-issue.md"/>
     <toc-element topic="jdk-gc.md"/>
     <toc-element topic="ThreadANDProcess.md"/>

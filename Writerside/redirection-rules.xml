@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rules SYSTEM "https://resources.jetbrains.com/writerside/1.0/redirection-rules.dtd">
+<rules>
+    <!-- format is as follows
+    <rule id="<unique id>">
+        <accepts>page.html</accepts>
+    </rule>
+    -->
+    <rule id="fb7f5df">
+        <description>Created after removal of "JDK의 GC" from Joypark 개발노트</description>
+        <accepts>jdk-gc.html</accepts>
+    </rule>
+    <rule id="6a60ee46">
+        <description>Created after removal of "프로세스와 스레드" from Joypark 개발노트</description>
+        <accepts>ThreadANDProcess.html</accepts>
+    </rule>
+    <rule id="6390b787">
+        <description>Created after removal of "멀티스레딩" from Joypark 개발노트</description>
+        <accepts>multithread.html</accepts>
+    </rule>
+    <rule id="6d3d2e68">
+        <description>Created after removal of "데이터를 실어나르는 객체" from Joypark 개발노트</description>
+        <accepts>all-about-entity-in-spring.html</accepts>
+    </rule>
+    <rule id="47d6e772">
+        <description>Created after removal of "Node.js" from Joypark 개발노트</description>
+        <accepts>nodejs.html</accepts>
+    </rule>
+    <rule id="4badd980">
+        <description>Created after removal of "collection-and-collections" from Joypark 개발노트</description>
+        <accepts>collection-and-collections.html</accepts>
+    </rule>
+    <rule id="7ebdac5c">
+        <description>Created after removal of "Iterator 인터페이스가 다양한 컬렉션에 접근할 수 있는 이유" from Joypark 개발노트</description>
+        <accepts>how-iterator-could-access-multiple-collections.html</accepts>
+    </rule>
+    <rule id="55f9fd9f">
+        <description>Created after removal of "컴파일 언어와 스크립트 언어" from Joypark 개발노트</description>
+        <accepts>programming-language.html</accepts>
+    </rule>
+</rules>

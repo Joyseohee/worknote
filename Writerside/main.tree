@@ -7,4 +7,5 @@
                  start-page="webpack-build-issue.md">
     <toc-element topic="Apache-POI-large-capacity.md"/>
     <toc-element topic="webpack-build-issue.md"/>
+    <toc-element topic="di-and-constructor.md"/>
 </instance-profile>

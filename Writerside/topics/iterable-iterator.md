@@ -6,7 +6,7 @@ Java에서 **Iterable**과 **Iterator**는 컬렉션 프레임워크에서 데�
 
 ## **1. Iterable과 Iterator의 개념**
 
-### ** 1-1. Iterable**
+### 1-1. Iterable
 - **정의**: Iterable은 **반복(iteration)할 수 있는 객체**를 의미합니다.
 - **역할**: Iterable 객체는 **Iterator를 반환**하여 컬렉션의 요소를 순회할 수 있도록 합니다.
 - **사용 예시**: 모든 컬렉션(List, Set 등)은 Iterable을 구현하므로 `for-each` 루프에서 사용할 수 있습니다.

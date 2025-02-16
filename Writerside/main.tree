@@ -4,7 +4,7 @@
 
 <instance-profile id="main"
                  name="Joypark 개발노트"
-                 start-page="webpack-build-issue.md">
+                 start-page="try-with-resource.md">
     <toc-element topic="try-with-resource.md"/>
     <toc-element topic="webpack-build-issue.md"/>
 </instance-profile>

@@ -38,4 +38,32 @@
         <description>Created after removal of "컴파일 언어와 스크립트 언어" from Joypark 개발노트</description>
         <accepts>programming-language.html</accepts>
     </rule>
+    <rule id="103a7581">
+        <description>Created after removal of "대규모 트래픽 테스트" from Joypark 개발노트</description>
+        <accepts>traffic-test.html</accepts>
+    </rule>
+    <rule id="736b3e1d">
+        <description>Created after removal of "동시성 문제 해결" from Joypark 개발노트</description>
+        <accepts>asyncronous-problem-slove.html</accepts>
+    </rule>
+    <rule id="6e24940b">
+        <description>Created after removal of "Apache-POI를 활요한 대용량 엑셀 다운로드 구현" from Joypark 개발노트</description>
+        <accepts>Apache-POI-large-capacity.html</accepts>
+    </rule>
+    <rule id="18327bf2">
+        <description>Created after removal of "iterable-iterator" from Joypark 개발노트</description>
+        <accepts>iterable-iterator.html</accepts>
+    </rule>
+    <rule id="10557ec6">
+        <description>Created after removal of "Java에서 ArrayList와 LinkedList를 구현하는 방법" from Joypark 개발노트</description>
+        <accepts>diff-arraylist-linkedlist.html</accepts>
+    </rule>
+    <rule id="131bcea7">
+        <description>Created after removal of "DI와 생성자" from Joypark 개발노트</description>
+        <accepts>di-and-constructor.html</accepts>
+    </rule>
+    <rule id="531e4d21">
+        <description>Created after removal of "DB 트리거 실행 시점" from Joypark 개발노트</description>
+        <accepts>trigger-executed-condition.html</accepts>
+    </rule>
 </rules>

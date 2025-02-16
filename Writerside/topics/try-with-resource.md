@@ -1,8 +1,109 @@
 # try-with-resource 구문
 
-### **`try-with-resources` 구문의 장단점과 활용 시 유의점**
+최근 실행한 정적 분석에 제대로 닫히지 않은 입출력 클래스가 포착됐습니다.<br/>
+try-catch 구문으로 자원을 해제해도 되지만, 특정 조건만 만족한다면 조금 더 간결하게 코드를 수정할 수 있습니다.<br/>
+try-with-resources 구문을 활용하는 방법인데요. 자바 1.7 이상의 버전에서는 자원이 자동으로 닫히도록 보장하는 try-with-resources 구문을 지원합니다.<br/>
+try-catch 구문으로 작성한 코드를 try-with-resources 구문으로 수정하면서 어떻게 다른지 비교해보겠습니다.<br/>
 
-`try-with-resources` 구문은 **자원이 자동으로 닫히도록 보장하는** Java의 기능으로, `AutoCloseable` 또는 `Closeable` 인터페이스를 구현한 객체를 대상으로 사용할 수 있습니다.
+## try-catch 구문의 사용
+BufferedReader와 FileReader는 모두 Reader 클래스를 상속합니다. Reader 클래스는 IOException을 유발할 수 있습니다.<br/> 
+때문에 반드시 예외처리해야 합니다.<br/>
+보편적으로 알려져있듯 try-catch 구문을 활용해 예외처리할 수 있습니다.
+
+```java
+BufferedReader br = null;
+try {
+    br = new BufferedReader(new FileReader("file.txt"));
+    String line;
+    while ((line = br.readLine()) != null) {
+        System.out.println(line);
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+} finally {
+    if (br != null) {
+        try {
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+입출력 작업은 자원을 사용하고 다시 닫아줘야하는 작업입니다. <br/>
+위와 같이 자원을 이중으로 사용하는 케이스라면 try-catch 구문으로 인해 코드가 장황해지고 가독성도 악화됩니다.<br/>
+이 때 try-with-resources 구문을 활용하면 코드를 간결하게 수정할 수 있습니다.<br/>
+
+```java
+try (BufferedReader br = new BufferedReader(new FileReader("file.txt"))) {
+    String line;
+    while ((line = br.readLine()) != null) {
+        System.out.println(line);
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+try-with-resources 구문이 활용되는 주된 상황은 아래와 같습니다.
+
+### 1. 파일 입출력 시 활용
+```java
+try (BufferedReader br = new BufferedReader(new FileReader("file.txt"))) {
+    String line;
+    while ((line = br.readLine()) != null) {
+        System.out.println(line);
+    }
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+- `BufferedReader`가 자동으로 닫혀 **자원 누수를 방지**합니다.
+
+### 2. 데이터베이스 연결 시 활용 (JDBC)
+```java
+try (Connection conn = DriverManager.getConnection(url, user, password);
+     PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users");
+     ResultSet rs = pstmt.executeQuery()) {
+
+    while (rs.next()) {
+        System.out.println(rs.getString("name"));
+    }
+} catch (SQLException e) {
+    e.printStackTrace();
+}
+```
+- `Connection`, `PreparedStatement`, `ResultSet`을 안전하게 닫아 DB 연결 문제를 예방합니다.
+
+---
+
+### **`try-with-resources` 구문 활용 시 유의점**
+
+코드의 양을 줄이고 가독성을 높이는 유용한 표기법이지만, 모든 예외처리에 적용할 수 있는 방법은 아닙니다.<br/>
+`AutoCloseable` 인터페이스를 구현한 객체를 대상으로 사용할 수 있습니다.<br/>
+`BufferedReader`와 `FileReader`가 상속한 `Reader` 클래스는 `Closeable` 인터페이스를 상속하고 있습니다.<br/>
+그리고 이 `Closeable`는 `AutoCloseable` 인터페이스를 상속하고 있습니다.<br/>
+try-with-resource 구문은 `AutoCloseable`을 구현하고 있는 구현체의 close 함수를 실행함으로 써 자원을 해제합니다.<br/>
+`AutoCloseable`를 구현하지 않은 클래스는 try-with-resources 구문으로 자원을 해제할 수 없고 직접 해제해야 합니다.<br/>
+
+```JAVA
+Socket socket = null;
+try {
+    socket = new Socket("example.com", 80);
+    // 데이터 송수신 처리
+} catch (IOException e) {
+    e.printStackTrace();
+} finally {
+    if (socket != null) {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+```
 
 ---
 
@@ -10,7 +111,7 @@
 
 ### **자원 해제를 자동으로 처리**
 - `try` 블록이 끝나면 `close()` 메서드가 자동으로 호출됩니다.
-- 개발자가 직접 `finally` 블록에서 `close()`를 호출할 필요가 없어 코드가 간결해집니다.
+-  `finally` 블록에서 `close()`를 호출할 필요가 없어 코드가 간결해집니다.
 
 ### **예외 발생 시 자원 누수 방지**
 - `finally` 블록에서 `close()`를 호출할 경우, 예외가 발생하면 자원이 닫히지 않을 위험이 있지만 `try-with-resources`는 이를 보장합니다.
@@ -60,38 +161,6 @@
 
 ---
 
-## **💡 실용적인 활용 예시**
-
-### **1. 파일 입출력 시 활용**
-```java
-try (BufferedReader br = new BufferedReader(new FileReader("file.txt"))) {
-    String line;
-    while ((line = br.readLine()) != null) {
-        System.out.println(line);
-    }
-} catch (IOException e) {
-    e.printStackTrace();
-}
-```
-- `BufferedReader`가 자동으로 닫혀 **자원 누수를 방지**합니다.
-
-### **2. 데이터베이스 연결 시 활용 (JDBC)**
-```java
-try (Connection conn = DriverManager.getConnection(url, user, password);
-     PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM users");
-     ResultSet rs = pstmt.executeQuery()) {
-
-    while (rs.next()) {
-        System.out.println(rs.getString("name"));
-    }
-} catch (SQLException e) {
-    e.printStackTrace();
-}
-```
-- **`Connection`, `PreparedStatement`, `ResultSet`을 안전하게 닫아** DB 연결 문제를 예방합니다.
-
----
-
 ## **🔎 정리**
 | 항목 | 설명 |
 |------|------|
@@ -102,81 +171,13 @@ try (Connection conn = DriverManager.getConnection(url, user, password);
 ---
 
 ### **👉 결론**
-`try-with-resources`는 자원을 다룰 때 발생하는 **자원 누수 문제를 방지하고, 코드의 안정성을 높이는 중요한 기능**입니다.  
-특히 **파일 처리, 데이터베이스 연결, 네트워크 스트림 처리** 등에서 적극적으로 활용하는 것이 좋습니다. 🚀
+`try-with-resources`는 자원을 다룰 때 발생하는 **자원 누수 문제를 방지하고, 코드의 안정성을 높이는 중요한 기능**입니다.<br/>
+특히 **파일 처리, 데이터베이스 연결, 네트워크 스트림 처리** 등에서 활용하면 try-catch-finally 구문보다 간결하고 정확하게 예외를 처리할 수 있습니다. 🚀
 
-> **자원관리가 중요한 이유**
+> **BONUS :: 자원관리 유의점**
 >
-> * 파일 기술자(file descriptor), 데이터베이스 연결, 소켓(socket)과 같은 자원은 유한합니다. 이러한 자원을 더는 사용하지 않는다면 적절히 반환해야 합니다.
-> * Java 프로그램은 참조되지 않는 메모리 자원을 스스로 해제합니다. 하지만 파일 기술자, 데이터베이스 연결, 소켓과 같은 비-메모리 자원은 스스로 해제하지 않고 계속 점유합니다. 따라서 앞의 예제처럼 fis를 해제하지 않으면 다량의 요청이 들어올 때 다음과 같은 오류가 발생하면서 처리가 중단될 수 있습니다.
-> Too many open files
-> 이처럼 자원을 오래 점유하면 처리 성능이 저하될 수 있습니다. 자원을 더는 사용하지 않는다면 최대한 빨리 해제하십시오. 앞의 예제의 경우, loadFile 메서드 이후로 fis를 사용하지 않는다면 다음과 같이 try...finally 문을 사용하여 fis를 바로 해제해야 합니다.
+> * 파일 입출력, 데이터베이스 연결, 소켓(socket)과 같은 자원은 유한합니다. 이러한 자원을 사용하지 않는 시점에는 반환해야 합니다.
+> * Java 프로그램은 참조되지 않는 메모리 자원을 스스로 해제합니다. 하지만 파일 입출력, 데이터베이스 연결, 소켓과 같은 비-메모리 자원은 스스로 해제하지 않고 계속 점유합니다. 
+> * 따라서 자원을 해제하지 않으면 다량의 요청이 들어올 때 Too many open files와 같은 오류가 발생하면서 처리가 중단될 수 있습니다.
 >
 {style="warning"}
-
-
-예를 들어 다음은 파일을 열고 사용한 후 해제하지 않은 채로 다른 작업을 수행하는 코드입니다.
-
-```java
-FileInputStream fis = new FileInputStream("data.txt");
-loadFile(fis);
-doSomethingElse();
-```
-```java
-FileInputStream fis = null;
-try {
-  FileInputStream fis = new FileInputStream("data.txt");
-  loadFile(fis);
-} finally {
-  if (fis != null) {
-    try { fis.close(); }
-    catch (Exception e) { logger.error(e); }
-  }
-}
-doSomethingElse();
-```
-
-이때 반드시 finally 블록 내에서 자원을 해제하십시오. 그래야만 예외가 발생하였을 때도 올바르게 자원을 해제할 수 있습니다. 예를 들어 다음과 같이 구현하면,
-```Java
-FileInputStream fis = null;
-loadFile(fis);
-fis.close();
-doSomethingElse();
-```
-loadFile 메서드에서 예외가 발생되면 fis를 해제하는 구문을 건너뛰게 됩니다.
-
-자원을 담은 변수에 새 자원을 담을 때는 먼저 기존 자원을 해제해야 합니다. 예를 들어 다음과 같은 프로그램은 언뜻 잘 작성된 프로그램으로 보입니다.
-
-```Java
-FileInputStream fis = null;
-try {
-  fis = new FileInputStream("data1.txt"); // ...(1)
-  loadFile(fis);
-  fis = new FileInputStream("data2.txt"); // ...(2)
-  loadFile(fis);
-} finally {
-  if (fis != null) {
-    try { fis.close(); }
-    catch (Exception e) { logger.error(e); }
-  }
-}
-doSomethingElse();
-```
-하지만 (2)가 수행되면 이후로는 (1)에서 생성한 자원에 접근할 수가 없으므로 이는 잘못 작성된 프로그램입니다. 다음과 같이 기존 자원을 해제한 후에 (2)를 수행해야 합니다.
-
-```Java
-fis = new FileInputStream("data1.txt"); // ...(1)
-loadFile(fis);
-fis.close();
-fis = new FileInputStream("data2.txt"); // ...(2)
-...
-```
-
-Java 7 버전 이상을 지원한다면 직접 자원을 해제하는 것보다 다음과 같이 try-with-resource 문을 사용하는 것이 더 간편합니다.
-
-```Java
-try (FileInputStream fis = new FileInputStream("data.txt")) {
-  loadFile(fis);
-}
-doSomethingElse();
-```
